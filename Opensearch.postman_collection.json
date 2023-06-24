@@ -1,0 +1,91 @@
+{
+	"info": {
+		"_postman_id": "c01a9f81-d1e3-4095-88c6-42a02fb16345",
+		"name": "Opensearch",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7958421"
+	},
+	"item": [
+		{
+			"name": "index search",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "$Miska2007",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "chris",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://search-opensearch-service-tutorial-xwx3yg2waedrhffol7hfjgnqiy.us-east-1.es.amazonaws.com/movies/_search",
+					"protocol": "https",
+					"host": [
+						"search-opensearch-service-tutorial-xwx3yg2waedrhffol7hfjgnqiy",
+						"us-east-1",
+						"es",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"movies",
+						"_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Index",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "$Miska2007",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "chris",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://search-opensearch-service-tutorial-xwx3yg2waedrhffol7hfjgnqiy.us-east-1.es.amazonaws.com/movies?pretty",
+					"protocol": "https",
+					"host": [
+						"search-opensearch-service-tutorial-xwx3yg2waedrhffol7hfjgnqiy",
+						"us-east-1",
+						"es",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"movies"
+					],
+					"query": [
+						{
+							"key": "pretty",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
