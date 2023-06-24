@@ -9,7 +9,7 @@ locals {
 
 module "acm" {
   source      = "./acm_cert"
-  domain_name = var.domain_name
+  domain_name = var.domain_name 
   zone_id     = data.aws_route53_zone.domain.zone_id
 }
 
