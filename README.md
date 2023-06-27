@@ -3,10 +3,13 @@
 ## Prerequisites
 Before you begin, make sure you have the following prerequisites:
 
+**Required**
 * [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) installed on your local machine
 * An AWS account.
 * AWS access key and secret key with sufficient permissions to create resources
 * [AWS CLI V2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+
+**Optional**
 * [AWS network setup](https://github.com/chris-piwinsky/aws_networking) project I created to stand up vpc, subnets, internet and nat gateway
 * [Registered Route53 domain](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html)
 
