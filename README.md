@@ -13,10 +13,6 @@ Before you begin, make sure you have the following prerequisites:
 * [AWS network setup](https://github.com/chris-piwinsky/aws_networking) project I created to stand up vpc, subnets, internet and nat gateway
 * [Registered Route53 domain](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html)
 
-## Application Setup
-
-* Follow the [README](./src/README.MD) for instructions on how to docker the app included with this project
-
 ## Infrastructure Setup
 
 * Clone the repository to your local machine.
