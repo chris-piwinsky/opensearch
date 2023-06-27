@@ -48,8 +48,12 @@ module "opensearch" {
   zone_awareness_enabled   = true
 }
 
-module "lambda_layer" {
-  source = "./lambda_layer"
+module "os_layer" {
+  source = "./os_lambda_layer"
+}
+
+module "wrapper_layer" {
+  source = "./wrapper_layer"
 }
 
 module "lambda_os_load" {
@@ -58,7 +62,7 @@ module "lambda_os_load" {
   ]
   source             = "./lambda_load"
   subnet_ids         = local.subnet_ids
-  layers             = [module.lambda_layer.layer_arn]
+  layers             = [module.os_layer.layer_arn, module.wrapper_layer.layer_arn]
   security_group_ids = [local.security_group]
   ssm_parameter_name = module.opensearch.ssm_parameter_name
   os_uri             = "https://${module.opensearch.os_uri}/"

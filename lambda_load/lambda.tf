@@ -1,7 +1,7 @@
 data "archive_file" "os_file" {
   type        = "zip"
-  source_file = "${path.module}/lambda_load/lambda_function.py"
-  output_path = "${path.module}/lambda_load/lambda_function.zip"
+  source_dir  = "${path.module}/lambda_load/"
+  output_path = "${path.module}/lambda_function.zip"
 }
 
 resource "aws_lambda_function" "os_bulk_lambda" {
@@ -11,12 +11,13 @@ resource "aws_lambda_function" "os_bulk_lambda" {
   role             = aws_iam_role.os_role.arn
   handler          = "lambda_function.lambda_handler"
   source_code_hash = data.archive_file.os_file.output_base64sha256
+  timeout          = 120
   runtime          = "python3.9"
   layers           = var.layers
-  # vpc_config {
-  #   security_group_ids = var.security_group_ids
-  #   subnet_ids         = var.subnet_ids
-  # }
+  vpc_config {
+    security_group_ids = var.security_group_ids
+    subnet_ids         = var.subnet_ids
+  }
 
   environment {
     variables = {

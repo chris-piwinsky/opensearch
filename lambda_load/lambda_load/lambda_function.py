@@ -1,6 +1,7 @@
 import json
-import boto3
+import wrapper
 import os
+import os_function
 from opensearchpy import OpenSearch, helpers
 from opensearchpy.helpers import bulk
 
@@ -11,37 +12,59 @@ def load_data():
         for recipe in data:
             yield {'_index': 'recipes', '_source': recipe}
 
-
-def get_password():
-    ssm = boto3.client('ssm')
-    parameter = ssm.get_parameter(Name=os.environ['SSM_PARAMETER'], WithDecryption=True)
-    print(parameter['Parameter']['Value'])
-    return parameter['Parameter']['Value']
-
-
 def lambda_handler(event, context):
-    password = get_password()
-    client = OpenSearch(
-        hosts=[os.environ['OS_URI']],
-        http_auth=(os.environ['MASTER_USER'], password),
-        use_ssl=True,
-        verify_certs=False,
-        ssl_assert_hostname=False,
-        ssl_show_warn=False,
-    )
-    client.info()
+    print(f"Event: {json.dumps(event)}")
+    
+    password = wrapper.get_password()
+    client = os_function.connect(password)
 
     # Specify the index and document type
     index_name = 'recipes'
     doc_type = '_doc'
     counter = 0
 
+    response_body = ""
+    status_code = 0
     # Create index in opensearch
-    response = client.indices.create(index_name)
-
-    # Call load data to bulk load file into opensearch
-    # bulk(client, load_data())
+    if event['action'] == 'create':
+        try:
+            response_body = os_function.create(client, index_name)
+            print('Create Response: ', response_body)
+            status_code = 200
+        except Exception as e:
+            print("Create error occurred:", str(e))
+            status_code = 500
+            response_body = str(e)
+            
+    # Load items into opensearch
+    elif event['action'] == 'load':
+        try:
+            response_body = bulk(client, load_data())
+            print('Load Response: ', response_body)
+            status_code = 200
+        except Exception as e:
+            print("Load error occurred:", str(e))
+            status_code = 500
+            response_body = str(e)
 
     # Confirm number of items loaded into opensearch
-    # response = client.count(index=index_name)
-    # print(f"Total items in index '{index_name}': {response['count']}")
+    elif event['action'] == 'count':
+        try:
+            response_body = client.count(index=index_name)
+            print(f"Total items in index '{index_name}': {response_body['count']}")
+            status_code = 200
+        except Exception as e:
+            print("Load error occurred:", str(e))
+            status_code = 500
+            response_body = str(e)
+
+    # Construct the response
+    response = {
+        'statusCode': status_code,
+        'body': json.dumps(response_body),
+        'headers': {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    return response

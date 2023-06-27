@@ -27,6 +27,17 @@ Before you begin, make sure you have the following prerequisites:
 * Run `terraform apply` to create the infrastructure on AWS.
 * When you are finished using the infrastructure, run `terraform destroy` to delete all the resources that Terraform created.
 
+
+## Load data into Opensearch
+
+A lambda called os_load is created for the terraform.  This is ran in 3 steps:
+1. create - creates the recipe index
+    * `aws lambda invoke --function-name os_load --payload '{"action": "create"}'`
+2. load - loads data into the index
+    * `aws lambda invoke --function-name os_load --payload '{"action": "load"}'`
+3. count - counts the number of items loaded into the index
+    * `aws lambda invoke --function-name os_load --payload '{"action": "count"}'`
+
 ## References
 
 * [Postman for opensearch](https://christinavhastenrath.medium.com/how-to-test-aws-opensearch-serverless-auth-in-postman-1a288b628ac5)
@@ -34,8 +45,3 @@ Before you begin, make sure you have the following prerequisites:
 * [Bulk load example](https://www.swarmee.net/blog/2019-04-02-Loading-Data-Into-ElasticSearch-With-Python/)
 * [Opensearch queries](https://medium.com/@aiven-io/write-search-queries-with-python-and-opensearch-to-find-delicious-recipes-2514679b450c)
 
-## Load data into Opensearch
-
-I created a simple script that will load recipes into the opensearch container you created with the terraform.
-
-Navigate to the src folder and simply run the opensearch.py file.  this will load 21k recipes into opensearch.
