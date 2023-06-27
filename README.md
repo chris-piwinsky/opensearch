@@ -1,8 +1,5 @@
 # Opensearch public setup with terraform
 
-This repository provides the necessary files and instructions to set up an Elastic Container Service (ECS) project using Terraform.
-
-
 ## Prerequisites
 Before you begin, make sure you have the following prerequisites:
 
