@@ -7,7 +7,7 @@ from opensearchpy.helpers import bulk
 
 
 def load_data():
-    with open('full_format_recipes.json', 'r') as f:
+    with open('/opt/python/full_format_recipes.json', 'r') as f:
         data = json.load(f)
         for recipe in data:
             yield {'_index': 'recipes', '_source': recipe}
